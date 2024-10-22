@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Classroom</title>
+    <style>
+        body { font-family: Arial, sans-serif; 
+        background-color: #666666;}
+        #messages { border: 10px solid #393939; height: 300px; overflow-y: scroll; padding: 10px; }
+        #message { width: 80%; }
+        #send { width: 18%; }
+        
+    </style>
+</head>
+<body>
+    <div id="messages"></div>
+    <input id="message" type="text" placeholder="Whisper a Message?">
+    <button id="send">Send</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const messagesDiv = document.getElementById('Secrets');
+        const messageInput = document.getElementById('Your Little Secret');
+        const sendButton = document.getElementById('😉 Whisper 😉');
+
+        sendButton.onclick = () => {
+            const message = messageInput.value;
+            socket.emit('chat message', message);
+            messageInput.value = '';
+        };
+
+        socket.on('chat message', (msg) => {
+            const newMessage = document.createElement('div');
+            newMessage.textContent = msg;
+            messagesDiv.appendChild(newMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    </script>
+</body>
+</html>
